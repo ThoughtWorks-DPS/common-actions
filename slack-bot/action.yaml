@@ -53,8 +53,8 @@ runs:
         echo "INCLUDE_TAG=${{ inputs.include-tag }}"
         echo "WORKFLOW_URL=$WORKFLOW_URL"
 
-        if [[ ${{ inputs.include-tag }} == "false" ]]; then
-          msg=${{ inputs.message }}
+        if [[ "${{ inputs.include-tag }}" == "false" ]]; then
+          msg="${{ inputs.message }}"
         else
           msg="${{ inputs.message }} ${{ github.ref_name }}"
         fi
