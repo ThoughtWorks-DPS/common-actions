@@ -63,7 +63,7 @@ runs:
         if [[ "${{ inputs.custom-message }}" != "" ]]; then
           json=${{ inputs.custom-message }}
         else
-          if [[ "${{ inputs.include-link" }} == "false" ]]; then
+          if [[ "${{ inputs.include-link }}" == "false" ]]; then
             json=$(cat <<EOF
         {"channel": "${{ inputs.channel }}","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"$msg"}}]}
         EOF
