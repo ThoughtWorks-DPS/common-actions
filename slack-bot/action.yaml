@@ -54,7 +54,7 @@ runs:
         echo "WORKFLOW_URL=$WORKFLOW_URL"
         echo "SLACK_BOT_TOKEN ${SLACK_BOT_TOKEN:0:4}"
 
-        if [[ ${{ inputs.include-tag }} == "false" ]]; then
+        if [[ "${{ inputs.include-tag }}" == "false" ]]; then
           msg=${{ inputs.message }}
         else
           msg="${{ inputs.message }} ${{ github.include-tag }}"
@@ -63,7 +63,7 @@ runs:
         if [[ "${{ inputs.custom-message }}" != "" ]]; then
           json=${{ inputs.custom-message }}
         else
-          if [[ ${{ inputs.include-link }} == "false" ]]; then
+          if [[ "${{ inputs.include-link" }} == "false" ]]; then
             json=$(cat <<EOF
         {"channel": "${{ inputs.channel }}","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"$msg"}}]}
         EOF
