@@ -38,13 +38,13 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
+          SLACK_BOT_TOKEN: op://empc-lab/svc-slack/gha-slack-bot-token
 
       - name: test common-actions/slack-bot
         uses: ThoughtWorks-DPS/common-actions/slack-bot@main
         with:
           channel: lab-events
-          message: ThoughtWorks/common-actions ci
+          message: slack-bot test in ThoughtWorks/common-actions development-build
           custom-message: ""
           include-link: "false"
           include-tag: "false"
