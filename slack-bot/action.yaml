@@ -49,6 +49,7 @@ runs:
         echo "INCLUDE_LINK=${{ inputs.include-link }}"
         echo "INCLUDE_TAG=${{ inputs.include-tag }}"
         echo "WORKFLOW_URL=$WORKFLOW_URL"
+        echo "SLACK_BOT_TOKEN ${SLACK_BOT_TOKEN:0:4}"
 
         if [[ ${{ inputs.include-tag }} == 0 ]]; then
           msg=${{ inputs.message }}
