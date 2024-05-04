@@ -18,4 +18,26 @@ jobs:
 
   release-version:
     name: release version
-    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/release-version.yaml@main
+    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/release-version.yaml@421a368581ea29881a5d70ef1744d90d874c5703   # v0.1.0
+
+  on-success:
+    name: notify new release version
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Load gha-slack-bot token
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SLACK_BOT_TOKEN: op://empc-lab/svc-slack/gha-slack-bot-token
+
+      - name: Post notice of new release
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@main
+        with:
+          channel: lab-events
+          message: New release ThoughtWorks/common-actions
+          include-tag: true
