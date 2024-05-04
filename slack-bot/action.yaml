@@ -9,7 +9,7 @@ inputs:
   channel:
     description: slack chanel
     required: true
-  
+
   message:
     description: message for default post format
     required: false
