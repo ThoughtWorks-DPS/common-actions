@@ -1,0 +1,79 @@
+# yamllint disable rule:line-length
+---
+name: slack-bot
+
+description: post slack-bot message to slack
+
+inputs:
+
+  channel:
+    description: slack chanel
+    required: true
+  
+  message:
+    description: message for default post format
+    required: false
+    default: ""
+
+  custom-message:
+    description: override complete post-bot json body
+    required: false
+    default: ""
+
+  include-link:
+    description: include link to workflow run
+    required: false
+    default: "false"
+
+  include-tag:
+    description: include version tag in message
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: slack-bot message
+      shell: bash
+      run: |
+        #!/usr/bin/env bash
+        set -eo pipefail
+
+        WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        echo "DEBUG: dependent env vars"
+        echo "CHANNEL=${{ inputs.channel }}"
+        echo "MESSAGE=${{ inputs.message }}"
+        echo "CUSTOM_MESSAGE=${{ inputs.custom-message }}"
+        echo "INCLUDE_LINK=${{ inputs.include-link }}"
+        echo "INCLUDE_TAG=${{ inputs.include-tag }}"
+        echo "WORKFLOW_URL=$WORKFLOW_URL"
+
+        if [[ ${{ inputs.include-tag }} == 0 ]]; then
+          msg=${{ inputs.message }}
+        else
+          msg="${{ inputs.message }} ${{ github.include-tag }}"
+        fi
+
+        if [[ "${{ inputs.custom-message }}" != "" ]]; then
+          json=${{ inputs.custom-message }}
+        else
+          if [[ ${{ inputs.include-link }} == 0 ]]; then
+            json=$(cat <<EOF
+        {"channel": "${{ inputs.channel }}","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"$msg"}}]}
+        EOF
+        )
+          else
+            json=$(cat <<EOF
+        {"channel": "${{ inputs.channel }}","blocks": [{"type": "section","text": {"type": "mrkdwn","text": "$msg"}},{"type": "divider"},{"type": "actions","elements": [{"type": "button","text": {"type": "plain_text","text": "go to pipeline","emoji": true},"url": "${WORKFLOW_URL}"}]}]}
+        EOF
+        )
+          fi
+        fi
+
+        echo $json
+        curl -H "Content-type: application/json; charset=utf-8" \
+              --data "$json" \
+              -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+              -X POST https://slack.com/api/chat.postMessage
