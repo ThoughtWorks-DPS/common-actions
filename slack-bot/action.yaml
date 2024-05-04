@@ -58,10 +58,9 @@ runs:
         else
           msg="${{ inputs.message }} ${{ github.ref_name }}"
         fi
-        echo "$msg"
 
-        # if [[ "${{ inputs.custom-message }}" != "" ]]; then
-        #   json="${{ inputs.custom-message }}"
+        if [[ "${{ inputs.custom-message }}" != "" ]]; then
+          json="${{ inputs.custom-message }}"
         # else
         #   if [[ "${{ inputs.include-link }}" == "false" ]]; then
         #     json=$(cat <<EOF
@@ -74,7 +73,7 @@ runs:
         # EOF
         # )
         #   fi
-        # fi
+        fi
 
         # echo $json
         # curl -H "Content-type: application/json; charset=utf-8" \
