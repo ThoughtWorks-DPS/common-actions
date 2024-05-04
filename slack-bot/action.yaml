@@ -61,22 +61,22 @@ runs:
 
         if [[ "${{ inputs.custom-message }}" != "" ]]; then
           json="${{ inputs.custom-message }}"
-        # else
-        #   if [[ "${{ inputs.include-link }}" == "false" ]]; then
-        #     json=$(cat <<EOF
-        # {"channel": "${{ inputs.channel }}","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"$msg"}}]}
-        # EOF
-        # )
-        #   else
-        #     json=$(cat <<EOF
-        # {"channel": "${{ inputs.channel }}","blocks": [{"type": "section","text": {"type": "mrkdwn","text": "$msg"}},{"type": "divider"},{"type": "actions","elements": [{"type": "button","text": {"type": "plain_text","text": "go to pipeline","emoji": true},"url": "${WORKFLOW_URL}"}]}]}
-        # EOF
-        # )
-        #   fi
+        else
+          if [[ "${{ inputs.include-link }}" == "false" ]]; then
+            json=$(cat <<EOF
+        {"channel": "${{ inputs.channel }}","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"$msg"}}]}
+        EOF
+        )
+          else
+            json=$(cat <<EOF
+        {"channel": "${{ inputs.channel }}","blocks": [{"type": "section","text": {"type": "mrkdwn","text": "$msg"}},{"type": "divider"},{"type": "actions","elements": [{"type": "button","text": {"type": "plain_text","text": "go to pipeline","emoji": true},"url": "${WORKFLOW_URL}"}]}]}
+        EOF
+        )
+          fi
         fi
 
-        # echo $json
-        # curl -H "Content-type: application/json; charset=utf-8" \
-        #       --data "$json" \
-        #       -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-        #       -X POST https://slack.com/api/chat.postMessage
+        echo $json
+        curl -H "Content-type: application/json; charset=utf-8" \
+              --data "$json" \
+              -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+              -X POST https://slack.com/api/chat.postMessage
