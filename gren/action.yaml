@@ -1,0 +1,24 @@
+# yamllint disable rule:line-length
+---
+name: generate release notes using gren
+
+description: generate release notes using gren
+
+inputs:
+
+  gren-additional-args:
+    description: additional custom command line flags
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: generate release notes using gren
+      shell: bash
+      run: |
+        #!/usr/bin/env bash
+        set -eo pipefail
+        gren release -t $GITHUB_REF_NAME ${{ inputs.gren-additional-args }}
