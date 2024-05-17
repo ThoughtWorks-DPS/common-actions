@@ -23,3 +23,14 @@ Post messages using the https://slack.com/api/chat.postMessage API resource.
     include-link: "false"     # include link to action the sent message
     include-tag: "false"      # include git tag with standard message
 ```
+
+###  /gren
+
+Create github release on current tag using github-release-notes.    
+
+```yaml
+- name: Generate release notes
+  uses: ThoughtWorks-DPS/common-actions/gren@v0.2.0
+  with:
+    gren-additional-args: ""  # include addiitonal gren command line arguments
+```
