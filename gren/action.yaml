@@ -21,4 +21,6 @@ runs:
       run: |
         #!/usr/bin/env bash
         set -eo pipefail
+        pwd 
+        gren --help
         gren release -t $GITHUB_REF_NAME ${{ inputs.gren-additional-args }}
